@@ -9,16 +9,16 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 
-class TempController extends AbstractController
+class RegistrationController extends AbstractController
 {
     /**
-     * @Route("/temp", name="app_temp")
+     * @Route("/registration", name="app_registration")
      */
     public function run(): Response
     {
-        return $this->render("temp.html.twig", [
-            "title" => "temp",
-            "header" => "temp",
+        return $this->render("registration.html.twig", [
+            "title" => "log up",
+            "header" => "Registration",
         ]);
     }
 }

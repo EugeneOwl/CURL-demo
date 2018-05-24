@@ -16,9 +16,25 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
  */
 class UserRepository extends ServiceEntityRepository
 {
+    private $connection;
+
     public function __construct(RegistryInterface $registry)
     {
         parent::__construct($registry, User::class);
+        $this->connection = $this->getEntityManager()->getConnection();
+    }
+
+    public function isUsernameFree(?string $username): bool
+    {
+        $sql = "
+            SELECT `user`.`id` FROM `user` `user`
+            WHERE `user`.`username` = :username;
+            ";
+        $stmt = $this->connection->prepare($sql);
+        $stmt->execute([
+            "username" => $username,
+        ]);
+        return count($stmt->fetchAll()) === 0;
     }
 
 //    /**

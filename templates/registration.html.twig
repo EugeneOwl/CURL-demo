@@ -2,6 +2,10 @@
 
 {% block contents %}
 
+    <div>
+        <p>{{ username_message }}</p>
+    </div>
+
     {{ form_start(form) }}
     {{ form_row(form.username) }}
     {{ form_row(form.plainPassword.first) }}

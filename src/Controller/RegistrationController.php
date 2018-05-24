@@ -5,7 +5,7 @@ declare(strict_types = 1);
 namespace App\Controller;
 
 
-use Doctrine\DBAL\Driver\PDOException;
+use App\Repository\UserRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -24,27 +24,28 @@ class RegistrationController extends AbstractController
         $user = new User();
         $form = $this->createForm(UserType::class, $user);
 
+        $isUsernameFree = true;
         $form->handleRequest($request);
-        try {
-            if ($form->isSubmitted() && $form->isValid()) {
+        if (
+            $form->isSubmitted() &&
+            $form->isValid() &&
+            $isUsernameFree = $this->getDoctrine()->getRepository(User::class)->isUsernameFree($user->getUsername())
+            ) {
+            $password = $passwordEncoder->encodePassword($user, $user->getPlainPassword());
+            $user->setPassword($password);
 
-                $password = $passwordEncoder->encodePassword($user, $user->getPlainPassword());
-                $user->setPassword($password);
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($user);
+            $entityManager->flush();
 
-                $entityManager = $this->getDoctrine()->getManager();
-                $entityManager->persist($user);
-                $entityManager->flush();
-
-                return $this->redirectToRoute('app_homepage');
-            }
-        } catch (PDOException $exception) {
-            echo "Not unique username.";
+            return $this->redirectToRoute('app_homepage');
         }
 
         return $this->render("registration.html.twig", [
-            "title" => "log up",
-            "header" => "Registration",
-            'form' => $form->createView(),
+            "title"             => "log up",
+            "header"            => "Registration",
+            "form"              => $form->createView(),
+            "username_message"  => $isUsernameFree ? "" : "Username is already taken",
         ]);
     }
 }

@@ -16,9 +16,10 @@ class HomeController extends AbstractController
      */
     public function run(): Response
     {
+        $username = $this->getUser()->getUsername();
         return $this->render("home.html.twig", [
             "title" => "Welcome",
-            "header" => "Welcome to homepage!",
+            "header" => "Welcome, $username!",
         ]);
     }
 }

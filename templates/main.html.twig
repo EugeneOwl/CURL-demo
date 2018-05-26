@@ -2,11 +2,11 @@
 
 {% block contents %}
     {{ form_start(form) }}
-    {{ form_row(form.city) }}
+    {{ form_row(form.name) }}
 
     <button type="submit">Search</button>
     {{ form_end(form) }}
-    {{ weatherShortDescription }}
+    {{ weatherShortDescription|raw }}
     <p>
         <a href="{{ path('app_login') }}">Log in</a>
     </p>

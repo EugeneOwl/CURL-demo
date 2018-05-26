@@ -5,7 +5,10 @@ declare(strict_types = 1);
 namespace App\Service;
 
 
-class WeatherForecast
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Entity\City;
+
+class WeatherForecast extends AbstractController
 {
     private const CITY_NOT_FOUND_MESSAGE = "City not found :(";
 
@@ -13,16 +16,8 @@ class WeatherForecast
     private $encodingFrom = "Windows-1251";
     private $encodingTo = "UTF-8";
     private $unneededPart = "<img title='Данные аэропорта' src='6/template/img/14-plane.gif' width='14' height='15'>";
-    private $startPhrase = "<h2>Фактическая погода</h2>";
+    private $startPhrase = "Сейчас <strong>в";
     private $finishPhrase = "<!-- Температура моря если есть -->";
-    private $cities = [
-        "гродно"  => "26825",
-        "витебск" => "26666",
-        "могилёв" => "26862",
-        "гомель"  => "33041",
-        "брест"   => "33008",
-        "минск"   => "26850",
-    ];
 
     private function getCityIndex(?string $inputCity): int
     {
@@ -30,7 +25,7 @@ class WeatherForecast
             return -1;
         }
         $cityName = mb_strtolower(trim($inputCity));
-        return $cities[$cityName] ?? -1;
+        return $this->getDoctrine()->getRepository(City::class)->getCityIndexNumber($cityName);
     }
 
     private function getPageContents(string $url): string
@@ -50,7 +45,7 @@ class WeatherForecast
 
     private function getWeatherDescription(int $cityIndex): string
     {
-        $weatherForecast = $this->getPageContents($this->meteoWebSiteURL);
+        $weatherForecast = $this->getPageContents($this->meteoWebSiteURL . $cityIndex);
         $weatherForecast = str_replace($this->unneededPart, "", $weatherForecast);
         $startPos = stripos($weatherForecast, $this->startPhrase);
         $finishPos = stripos($weatherForecast, $this->finishPhrase);

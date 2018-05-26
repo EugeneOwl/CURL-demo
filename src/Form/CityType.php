@@ -15,7 +15,7 @@ class CityType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add("city", TextType::class);
+        $builder->add("name", TextType::class);
     }
 
     public function configureOptions(OptionsResolver $resolver)

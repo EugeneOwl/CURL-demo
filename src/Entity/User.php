@@ -76,7 +76,7 @@ class User implements UserInterface
     }
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\City", inversedBy="user")
+     * @ORM\ManyToOne(targetEntity="App\Entity\City", inversedBy="User")
      * @ORM\JoinColumn(nullable=false)
      */
     private $city;
@@ -92,6 +92,23 @@ class User implements UserInterface
 
         return $this;
     }
+
+    /**
+     * @Assert\NotBlank()
+     * @Assert\Length(max=4096)
+     */
+    private $plainCityName;
+
+    public function getPlainCityName()
+    {
+        return $this->plainCityName;
+    }
+
+    public function setPlainCityName($cityName)
+    {
+        $this->plainCityName = $cityName;
+    }
+
 
     public function eraseCredentials()
     {

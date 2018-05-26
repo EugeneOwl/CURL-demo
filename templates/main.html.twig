@@ -1,10 +1,11 @@
 {% extends "base.html.twig" %}
 
 {% block contents %}
-    <form method="POST" action="{{ path('app_main') }}">
-        <input type="text" placeholder="city" name="city">
-        <button type="submit">Submit</button>
-    </form>
+    {{ form_start(form) }}
+    {{ form_row(form.city) }}
+
+    <button type="submit">Search</button>
+    {{ form_end(form) }}
     {{ weatherShortDescription }}
     <p>
         <a href="{{ path('app_login') }}">Log in</a>

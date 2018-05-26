@@ -30,8 +30,7 @@ class MainController extends AbstractController
         return $this->render("main.html.twig", [
             "title" => "main page",
             "header" => "Main page",
-            "search" => $form->createView(),
-            "form" => $form->createView(),
+            "searchForm" => $form->createView(),
             "weatherShortDescription" => $weatherShortDescription,
         ]);
     }

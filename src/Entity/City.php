@@ -2,24 +2,28 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use function Sodium\add;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\CityRepository")
  */
 class City
 {
+
+    public function __construct()
+    {
+        $this->users = new ArrayCollection();
+    }
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
     private $id;
-
-    /**
-     * @ORM\Column(type="string", length=25)
-     */
-    private $name;
 
     /**
      * @ORM\Column(type="integer")
@@ -30,6 +34,23 @@ class City
     {
         return $this->id;
     }
+
+    public function getIndexNumber(): ?int
+    {
+        return $this->index_number;
+    }
+
+    public function setIndexNumber(int $index_number): self
+    {
+        $this->index_number = $index_number;
+
+        return $this;
+    }
+
+    /**
+     * @ORM\Column(type="string", length=25)
+     */
+    private $name;
 
     public function getName(): ?string
     {
@@ -43,15 +64,16 @@ class City
         return $this;
     }
 
-    public function getIndexNumber(): ?int
-    {
-        return $this->index_number;
-    }
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\User", mappedBy="city")
+     */
+    private $users;
 
-    public function setIndexNumber(int $index_number): self
+    /**
+     * @return Collection|User[]
+     */
+    public function getUsers(): Collection
     {
-        $this->index_number = $index_number;
-
-        return $this;
+        return $this->users;
     }
 }

@@ -20,26 +20,15 @@ class User implements UserInterface
      */
     private $id;
 
-    /**
-     * @ORM\Column(type="string", length=25, unique=true)
-     */
-    private $username;
-
-    /**
-     * @Assert\NotBlank()
-     * @Assert\Length(max=4096)
-     */
-    private $plainPassword;
-
-    /**
-     * @ORM\Column(type="string", length=64)
-     */
-    private $password;
-
     public function getId()
     {
         return $this->id;
     }
+
+    /**
+     * @ORM\Column(type="string", length=25, unique=true)
+     */
+    private $username;
 
     public function getUsername(): ?string
     {
@@ -53,6 +42,12 @@ class User implements UserInterface
         return $this;
     }
 
+    /**
+     * @Assert\NotBlank()
+     * @Assert\Length(max=4096)
+     */
+    private $plainPassword;
+
     public function getPlainPassword()
     {
         return $this->plainPassword;
@@ -63,6 +58,11 @@ class User implements UserInterface
         $this->plainPassword = $password;
     }
 
+    /**
+     * @ORM\Column(type="string", length=64)
+     */
+    private $password;
+
     public function getPassword(): ?string
     {
         return $this->password;
@@ -71,6 +71,24 @@ class User implements UserInterface
     public function setPassword(string $password): self
     {
         $this->password = $password;
+
+        return $this;
+    }
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\City", inversedBy="user")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $city;
+
+    public function getCity(): ?City
+    {
+        return $this->city;
+    }
+
+    public function setCity(?City $city): self
+    {
+        $this->city = $city;
 
         return $this;
     }

@@ -76,7 +76,7 @@ class User implements UserInterface
     }
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\City", inversedBy="User")
+     * @ORM\ManyToOne(targetEntity="App\Entity\City", inversedBy="users")
      * @ORM\JoinColumn(nullable=false)
      */
     private $city;

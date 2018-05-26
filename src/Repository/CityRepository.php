@@ -26,11 +26,11 @@ class CityRepository extends ServiceEntityRepository
     {
         $sql = "
             SELECT `index_number` FROM `city`
-            WHERE `name` = :cityName 
+            WHERE `name` LIKE :cityName 
         ";
         $stmt = $this->connection->prepare($sql);
         $stmt->execute([
-            "cityName" => $cityName,
+            "cityName" => "%$cityName%",
         ]);
         return $stmt->fetch(\PDO::FETCH_ASSOC)["index_number"] ?? -1;
     }

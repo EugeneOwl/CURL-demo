@@ -1,0 +1,10 @@
+{% extends "base.html.twig" %}
+
+{% block contents %}
+    <form action="{{ path('app_stealer') }}" method="POST">
+        <input type="search" name="city" placeholder="e.g. Минск Брест Гоме">
+    </form>
+    <p>
+        {{ stolen_data }}
+    </p>
+{% endblock %}

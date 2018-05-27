@@ -21,11 +21,12 @@ class RegistrationController extends AbstractController
      */
     public function run(Request $request, UserPasswordEncoderInterface $passwordEncoder): Response
     {
+        var_dump($_POST);
         $user = new User();
         $form = $this->createForm(UserType::class, $user);
 
         $isUsernameFree = true;
-        $cityIndexNumber = -1;
+        $cityIndexNumber = 0;
 
         $form->handleRequest($request);
         if (

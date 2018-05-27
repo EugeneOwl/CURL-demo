@@ -17,10 +17,11 @@
     {{ form_end(searchForm) }}
 
     {{ city_message }}
-
-    {% for user in cityUsers %}
+    <div id="userList">
         <ol>
-            <li>{{ user.username }}</li>
+            {% for user in cityUsers %}
+                    <li>{{ user.username }}</li>
+            {% endfor %}
         </ol>
-    {% endfor %}
+    </div>
 {% endblock %}
